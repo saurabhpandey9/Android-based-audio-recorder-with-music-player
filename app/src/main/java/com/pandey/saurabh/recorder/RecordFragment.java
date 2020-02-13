@@ -22,6 +22,8 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private ImageView lstbtn;
+    private  ImageView record_btn;
+    private boolean isRecording=false;
 
 
     public RecordFragment() {
@@ -42,8 +44,11 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
         navController= Navigation.findNavController(view);
         lstbtn= (ImageView)view.findViewById(R.id.record_lst_btn);
+        record_btn=(ImageView) view.findViewById(R.id.record_btn);
 
         lstbtn.setOnClickListener(this);
+
+        record_btn.setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +58,21 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
             case R.id.record_lst_btn:
                 navController.navigate(R.id.action_recordFragment_to_audioList);
                 break;
+
+            case R.id.record_btn:
+                if(isRecording){
+                    //stop recording
+
+                    record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_stopped,null));
+                    isRecording=false;
+                }
+                else {
+                    //start recording
+                    record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_recording,null));
+                    isRecording=true;
+                }
+                break;
+
 
         }
 
