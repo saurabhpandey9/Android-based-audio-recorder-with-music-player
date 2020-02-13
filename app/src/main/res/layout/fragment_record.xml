@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordFragment">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/record_header_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_illustration"
+        android:layout_marginTop="64dp"
+        />
+
+    <TextView
+        android:padding="10dp"
+        android:textColor="@color/cardview_dark_background"
+        android:id="@+id/record_filename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Press the mic button \nto start recording"
+    />
+
+    <Chronometer
+        android:id="@+id/record_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="50dp"
+      />
+
+
+
+   <LinearLayout
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+
+
+       <ImageView
+           android:layout_weight="1"
+           android:padding="5dp"
+           android:id="@+id/record_btn"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:src="@drawable/record_btn_stopped"
+           />
+
+       <ImageView
+           android:layout_gravity="center"
+           android:id="@+id/record_lst_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:padding="5dp"
+           android:src="@drawable/recorder_list_btn" />
+
+
+   </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
