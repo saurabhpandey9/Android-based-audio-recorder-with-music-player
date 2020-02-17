@@ -3,6 +3,7 @@ package com.pandey.saurabh.recorder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.icu.util.IndianCalendar;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -95,9 +99,12 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
     private void startrecording() {
 
-        String recordingfilepath=getActivity().getExternalFilesDir("/Audio Recorder/").getAbsolutePath();
+        String recordingfilepath=getActivity().getExternalFilesDir("/").getAbsolutePath();
 
-        recordingfilename="first.mp3";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("YYYY_MM_DD_HH_MM_SS", Locale.ENGLISH);
+        Date date=new Date();
+
+        recordingfilename="Recording_"+simpleDateFormat.format(date)+".mp3";
 
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
