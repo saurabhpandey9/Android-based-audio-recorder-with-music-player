@@ -1,10 +1,13 @@
 package com.pandey.saurabh.recorder;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,10 +23,12 @@ import android.widget.ImageView;
  */
 public class RecordFragment extends Fragment implements View.OnClickListener {
 
+    private static final int PERMISSION_CODE =22 ;
     private NavController navController;
     private ImageView lstbtn;
     private  ImageView record_btn;
     private boolean isRecording=false;
+    private String recordpermission=Manifest.permission.RECORD_AUDIO;
 
 
     public RecordFragment() {
@@ -62,19 +67,31 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
             case R.id.record_btn:
                 if(isRecording){
                     //stop recording
-
                     record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_stopped,null));
                     isRecording=false;
                 }
                 else {
                     //start recording
-                    record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_recording,null));
-                    isRecording=true;
+                    if(checkrecording()){
+                        record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_recording,null));
+                        isRecording=true;
+                    }
+
                 }
                 break;
 
 
         }
 
+    }
+
+    private boolean checkrecording() {
+        if(ActivityCompat.checkSelfPermission(getContext(), recordpermission)== PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        else {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{recordpermission},PERMISSION_CODE);
+            return false;
+        }
     }
 }

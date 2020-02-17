@@ -17,6 +17,10 @@
         tools:layout="@layout/fragment_record" >
         <action
             android:id="@+id/action_recordFragment_to_audioList"
-            app:destination="@id/audioList" />
+            app:destination="@id/audioList"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:enterAnim="@anim/side_in"
+            app:popExitAnim="@anim/slide_out"/>
     </fragment>
 </navigation>
