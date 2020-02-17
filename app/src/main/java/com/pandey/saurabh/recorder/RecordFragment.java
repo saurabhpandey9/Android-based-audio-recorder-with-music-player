@@ -3,6 +3,7 @@ package com.pandey.saurabh.recorder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.IOException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,8 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     private  ImageView record_btn;
     private boolean isRecording=false;
     private String recordpermission=Manifest.permission.RECORD_AUDIO;
+    private MediaRecorder mediaRecorder;
+    private String recordingfilename;
 
 
     public RecordFragment() {
@@ -67,11 +72,14 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
             case R.id.record_btn:
                 if(isRecording){
                     //stop recording
+                    stoprecording();
                     record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_stopped,null));
                     isRecording=false;
                 }
                 else {
                     //start recording
+                    startrecording();
+                    
                     if(checkrecording()){
                         record_btn.setImageDrawable(getResources().getDrawable(R.drawable.record_btn_recording,null));
                         isRecording=true;
@@ -83,6 +91,33 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
         }
 
+    }
+
+    private void startrecording() {
+
+        String recordingfilepath=getActivity().getExternalFilesDir("/Audio Recorder/").getAbsolutePath();
+
+        recordingfilename="first.mp3";
+
+        mediaRecorder=new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(recordingfilepath+"/"+recordingfilename);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaRecorder.start();
+    }
+
+    private void stoprecording() {
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder=null;
     }
 
     private boolean checkrecording() {
