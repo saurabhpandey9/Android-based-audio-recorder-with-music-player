@@ -3,6 +3,7 @@ package com.pandey.saurabh.recorder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.icu.util.IndianCalendar;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -14,10 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,6 +42,9 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     private String recordpermission=Manifest.permission.RECORD_AUDIO;
     private MediaRecorder mediaRecorder;
     private String recordingfilename;
+    private TextView filename;
+
+    private Chronometer chronometer;// also called timer
 
 
     public RecordFragment() {
@@ -59,9 +66,10 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
         navController= Navigation.findNavController(view);
         lstbtn= (ImageView)view.findViewById(R.id.record_lst_btn);
         record_btn=(ImageView) view.findViewById(R.id.record_btn);
+        chronometer=view.findViewById(R.id.record_timer);
+        filename=(TextView)view.findViewById(R.id.record_filename);
 
         lstbtn.setOnClickListener(this);
-
         record_btn.setOnClickListener(this);
     }
 
@@ -99,12 +107,17 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
     private void startrecording() {
 
+        chronometer.setBase(SystemClock.elapsedRealtime());//to reset the timer when new recording start.
+        chronometer.start();
+
         String recordingfilepath=getActivity().getExternalFilesDir("/").getAbsolutePath();
 
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("YYYY_MM_DD_HH_MM_SS", Locale.ENGLISH);
         Date date=new Date();
 
         recordingfilename="Recording_"+simpleDateFormat.format(date)+".mp3";
+        filename.setText("Recording Started\n"+recordingfilename); //recording file name display
+        filename.setTextColor(Color.RED);
 
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -122,6 +135,12 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     }
 
     private void stoprecording() {
+        chronometer.stop(); //timer stop
+
+        filename.setText("Recording Stopped \n"+recordingfilename);
+        filename.setTextColor(Color.BLUE);//change file name color to blue when recording stop
+
+
         mediaRecorder.stop();
         mediaRecorder.release();
         mediaRecorder=null;
